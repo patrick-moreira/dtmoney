@@ -1,7 +1,12 @@
+import {useState} from 'react';
+
+import { GlobalStyle } from "./styles/global";
+
 import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
+import Modal from 'react-modal';
+
 import { createServer } from 'miragejs';
-import { GlobalStyle } from "./styles/global";
 
 createServer({
   routes() {
@@ -31,10 +36,24 @@ createServer({
 });
 
 function App() {
+  const [newTransactionModalIsOpen, setNewTransactionModalIsOpen] = useState<boolean>(false);
+
+  const handleNewTransactionModalIsOpen = () => {
+    setNewTransactionModalIsOpen(true);
+  };
+  
+  const handleNewTransactionModalIsClosed = () => {
+    setNewTransactionModalIsOpen(false);
+  };
+
   return (
     <>
-      <Header />
+      <Header onNewTransactionModalIsOpen={handleNewTransactionModalIsOpen} />
       <Dashboard />
+      <Modal
+        isOpen={newTransactionModalIsOpen}
+        onRequestClose={handleNewTransactionModalIsClosed}
+      />
       <GlobalStyle />
     </>
   );
